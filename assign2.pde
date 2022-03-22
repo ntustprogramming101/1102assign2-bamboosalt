@@ -196,8 +196,7 @@ image(reNormalImg,248,360);
   
 if(mouseX>248&&mouseX<392&&mouseY>360&&mouseY<420){
   image(reHoveredImg,248,360);
-}
-  if(mousePressed){
+    if(mousePressed){
      lifeState=HEART2;
      
      // init hog
@@ -215,6 +214,8 @@ if(mouseX>248&&mouseX<392&&mouseY>360&&mouseY<420){
      gameState=GAME_RUN;
 
   }
+}
+
 
 break;
 
