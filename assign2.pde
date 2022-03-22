@@ -42,7 +42,6 @@ void setup() {
    startHoveredImg=loadImage("img/startHovered.png");
    startNormalImg=loadImage("img/startNormal.png");
 
-
    x=0;
    y=160;
    soildH=floor(random(1,3));
@@ -106,15 +105,16 @@ break;
   if(hogX<0){
     hogX=0;
   }
+  for(float rate=0; rate<=15; rate+=3){
 if(keyPressed){
   image(hogImg,-80,-80);
   if(right){
     image(hogRightImg,hogX,hogY);
   }
-   if(left){
+   else if(left){
      image(hogLeftImg,hogX,hogY); 
    }
-   if(down){
+   else if(down){
    image(hogDownImg,hogX,hogY);
    }
 }else{
@@ -122,6 +122,7 @@ if(keyPressed){
    }
      
 }  
+ }
    //soldier
   image(soldierImg,x,y+80*soildH);
   x+=4;
