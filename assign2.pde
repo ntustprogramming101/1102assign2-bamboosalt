@@ -132,10 +132,7 @@ break;
     }else{
       cabbageY=cabbageY-cabbageY%BLOCK+BLOCK;
     }
-     println(cabbageY);
-    println(cabbageX);
-     println(hogY);
-    println(hogX);
+    
   }
     
     if(hogX>width-80){
