@@ -5,18 +5,26 @@ PImage hogImg, cabbageImg, hogDownImg, hogLeftImg, hogRightImg;
 PImage soldierImg;
 PImage gameoverImg, reHoveredImg, reNormalImg, startHoveredImg, startNormalImg;
 
-int x, y, c, a, soildH, hogX, hogY, cabbageX, cabbageY;
+int x, y, c, a, soildH, BLOCK;
 int gameState, heart1X , heartY, heart2X, heart3X;
-int lifeState, state;
+int lifeState, state, hogState;
 
 final int GAME_START= 0;
 final int GAME_RUN= 1;
 final int GAME_LOSE= 2;
 
+final int HOG_ORI=0;
+final int HOG_RIGHT=1;
+final int HOG_LEFT=2;
+final int HOG_DOWN=3;
+
 final int HEART0=0;
 final int HEART1=1;
 final int HEART2=2;
 final int HEART3=3;
+
+float time=0;
+float hogX, hogY, cabbageX, cabbageY;
 
 boolean right= false;
 boolean down= false;
@@ -45,10 +53,10 @@ void setup() {
    x=0;
    y=160;
    soildH=floor(random(1,3));
-   hogX=320;
-   hogY=80;
-   cabbageX=0;
-   cabbageY=160;
+   hogX=320.0;
+   hogY=80.0;
+   cabbageX=0.0;
+   cabbageY=160.0;
    heart1X=10;
    heart2X=80;
    heart3X=150;
@@ -56,8 +64,10 @@ void setup() {
   c=floor(random(3));// cabbageUpPlace
   a=floor(random(8));// cabbageRightPlace
    gameState=GAME_START;
-   lifeState= 2;
+   lifeState= HEART2;
    state=0;
+   hogState=HOG_ORI;
+   BLOCK=80;
 }
 
 void draw() {
@@ -93,36 +103,68 @@ break;
   
   fill(253,184,19);
    ellipse(590,50,120,120);
-   
+   //cabbage
+    if(cabbageX%BLOCK<30){
+      cabbageX=cabbageX-cabbageX%BLOCK;
+    }else{
+      cabbageX=cabbageX-cabbageX%BLOCK+BLOCK;
+    }
+    if(cabbageY%BLOCK<30){
+      cabbageY=cabbageY-cabbageY%BLOCK;
+    }else{
+      cabbageY=cabbageY-cabbageY%BLOCK+BLOCK;
+    }
    
    
     //hog
-      int time=0;
- if(time<=15){
+    
+    if(time==15.0){
+    hogState=HOG_ORI;
+    if(hogX%BLOCK<30){
+      hogX=hogX-hogX%BLOCK;
+    }else{
+      hogX=hogX-hogX%BLOCK+BLOCK;
+    }
+    if(hogY%BLOCK<30){
+      hogY=hogY-hogY%BLOCK;
+    }else{
+      hogY=hogY-hogY%BLOCK+BLOCK;
+    }
+  }
+    
     if(hogX>width-80){
     hogX=width-80;
   }
   if(hogX<0){
-    hogX=0;
+    hogX=0.0;
   }
-  for(float rate=0; rate<=15; rate+=3){
-if(keyPressed){
-  image(hogImg,-80,-80);
-  if(right){
+  if(hogY>height-80){
+    hogY=height-80;
+  }
+  
+  switch(hogState){
+    case HOG_ORI:
+    image(hogImg,hogX,hogY);
+    time=0.0;
+    break;
+    case HOG_RIGHT:
     image(hogRightImg,hogX,hogY);
+    hogX+=(80.0/15.0);
+    time++;
+    break;
+    case HOG_LEFT:
+    image(hogLeftImg,hogX,hogY);
+    hogX-=(80.0/15.0);
+    time++;
+    break;
+    case HOG_DOWN:
+    image(hogDownImg,hogX,hogY);
+    hogY+=(80.0/15.0);
+    time++;
+    break;
   }
-   else if(left){
-     image(hogLeftImg,hogX,hogY); 
-   }
-   else if(down){
-   image(hogDownImg,hogX,hogY);
-   }
-}else{
-     image(hogImg,hogX,hogY);
-   }
-     
-}  
- }
+   
+
    //soldier
   image(soldierImg,x,y+80*soildH);
   x+=4;
@@ -140,15 +182,19 @@ if(keyPressed){
      //hit solider
    if(hogX+80>x&&hogX<x+80&&hogY+80>y+80*soildH&&hogY<y+80*soildH+80){
      lifeState=HEART0;
+     hogState=HOG_ORI;
    }
    //ate cabbage
-  if(hogX==cabbageX+80*a&&hogY==cabbageY+80*c){
+   if(hogY>=cabbageY){
+  if(hogX+80<cabbageX+80*a+80&&hogX+80>cabbageX+80*a){
+  
      cabbageX=-(cabbageX+80*a);
      cabbageY=-(cabbageY+80*c);
      image(cabbageImg,cabbageX,cabbageY); 
    lifeState=HEART2;
     }
-   image(cabbageImg,cabbageX+80*a,cabbageY+80*c);
+   }
+    image(cabbageImg,cabbageX+80*a,cabbageY+80*c);
    
   
    break;
@@ -157,20 +203,25 @@ if(keyPressed){
    image(lifeImg,heart2X,heartY);  
    //hit solider
    if(hogX+80>x&&hogX<x+80&&hogY+80>y+80*soildH&&hogY<y+80*soildH+80){
-     hogX=320;
-     hogY=80;
+     hogX=320.0;
+     hogY=80.0;
      image(hogImg,hogX,hogY);
+     hogState=HOG_ORI;
      lifeState=HEART1;
    }
    //ate cabbage
-   image(cabbageImg,cabbageX+80*a,cabbageY+80*c);
-   if(hogX==cabbageX+80*a&&hogY==cabbageY+80*c){
+   
+  
+   if(hogY>=cabbageY){
+  if(hogX+80<cabbageX+80*a+80&&hogX+80>cabbageX+80*a){
+  
      cabbageX=-(cabbageX+80*a);
      cabbageY=-(cabbageY+80*c);
      image(cabbageImg,cabbageX,cabbageY); 
    lifeState=HEART3;
     }
-   
+   }
+    image(cabbageImg,cabbageX+80*a,cabbageY+80*c);
    
    break;
     case HEART3:
@@ -179,9 +230,10 @@ if(keyPressed){
     image(lifeImg,heart3X,heartY);
     //hit solider
     if(hogX+80>x&&hogX<x+80&&hogY+80>y+80*soildH&&hogY<y+80*soildH+80){
-     hogX=320;
-     hogY=80;
+     hogX=320.0;
+     hogY=80.0;
      image(hogImg,hogX,hogY);
+     hogState=HOG_ORI;
      lifeState=HEART2;
    }
   
@@ -201,13 +253,13 @@ if(mouseX>248&&mouseX<392&&mouseY>360&&mouseY<420){
      lifeState=HEART2;
      
      // init hog
-     hogX=320;
-     hogY=80;
+     hogX=320.0;
+     hogY=80.0;
      image(hogImg,hogX,hogY);
      
      // init cabbage
-     cabbageX=0;
-     cabbageY=160;
+     cabbageX=0.0;
+     cabbageY=160.0;
      c=floor(random(3));// cabbageUpPlace
      a=floor(random(8));// cabbageRightPlace
      image(cabbageImg,cabbageX+80*a,cabbageY+80*c);
@@ -225,37 +277,56 @@ break;
 void keyPressed(){
   if(key==CODED){
   switch(keyCode){
-  case RIGHT:  
-   
-  hogX+=80;
+  case RIGHT: 
+  if(hogState==HOG_ORI){
   right=true;
+  hogState=HOG_RIGHT;
+  
+  time=0.0;
+  }
   break;
    case DOWN: 
- 
-  hogY+=80;
-   down=true;
+ if(hogState==HOG_ORI){
+  down=true;
+  hogState=HOG_DOWN;
+  time=0.0;
+  }
+   
   break;
    case LEFT: 
-
-   hogX-=80;
+if(hogState==HOG_ORI){
    left=true;
+  hogState=HOG_LEFT;
+  time=0.0;
   break;
   }
   }
 }
-
+}
 
 void keyReleased(){
   if(key==CODED){
   switch(keyCode){
   case RIGHT:
+  if(hogState==HOG_ORI){
   right=false;
+  hogState=HOG_ORI;
+  time=0.0;
+  }
   break;
    case DOWN:
+   if(hogState==HOG_ORI){
    down=false;
+  hogState=HOG_ORI;
+  time=0.0;
+   }
   break;
    case LEFT:
+   if(hogState==HOG_ORI){
    left=false;
+  hogState=HOG_ORI;
+  time=0.0;
+   }
   break;
 }
   }
