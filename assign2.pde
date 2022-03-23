@@ -103,21 +103,11 @@ break;
   
   fill(253,184,19);
    ellipse(590,50,120,120);
-   //cabbage
-    if(cabbageX%BLOCK<30){
-      cabbageX=cabbageX-cabbageX%BLOCK;
-    }else{
-      cabbageX=cabbageX-cabbageX%BLOCK+BLOCK;
-    }
-    if(cabbageY%BLOCK<30){
-      cabbageY=cabbageY-cabbageY%BLOCK;
-    }else{
-      cabbageY=cabbageY-cabbageY%BLOCK+BLOCK;
-    }
+  
    
    
     //hog
-    
+    //fix float
     if(time==15.0){
     hogState=HOG_ORI;
     if(hogX%BLOCK<30){
@@ -130,6 +120,22 @@ break;
     }else{
       hogY=hogY-hogY%BLOCK+BLOCK;
     }
+   
+     //cabbage fix float
+    if(cabbageX%BLOCK<30){
+      cabbageX=cabbageX-cabbageX%BLOCK;
+    }else{
+      cabbageX=cabbageX-cabbageX%BLOCK+BLOCK;
+    }
+    if(cabbageY%BLOCK<30){
+      cabbageY=cabbageY-cabbageY%BLOCK;
+    }else{
+      cabbageY=cabbageY-cabbageY%BLOCK+BLOCK;
+    }
+     println(cabbageY);
+    println(cabbageX);
+     println(hogY);
+    println(hogX);
   }
     
     if(hogX>width-80){
@@ -185,8 +191,8 @@ break;
      hogState=HOG_ORI;
    }
    //ate cabbage
-   if(hogY>=cabbageY){
-  if(hogX+80<cabbageX+80*a+80&&hogX+80>cabbageX+80*a){
+   if(hogY>=cabbageY+80*c){
+  if(hogX+80==cabbageX+80*a+80&&hogX+80>cabbageX+80*a){
   
      cabbageX=-(cabbageX+80*a);
      cabbageY=-(cabbageY+80*c);
@@ -212,8 +218,8 @@ break;
    //ate cabbage
    
   
-   if(hogY>=cabbageY){
-  if(hogX+80<cabbageX+80*a+80&&hogX+80>cabbageX+80*a){
+   if(hogY>=cabbageY+80*c){
+  if(hogX+80==cabbageX+80*a+80&&hogX+80>cabbageX+80*a){
   
      cabbageX=-(cabbageX+80*a);
      cabbageY=-(cabbageY+80*c);
