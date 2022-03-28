@@ -52,7 +52,7 @@ void setup() {
 
    x=0;
    y=160;
-   soildH=floor(random(1,3));
+   soildH=floor(random(0,4));
    hogX=320.0;
    hogY=80.0;
    cabbageX=0.0;
@@ -152,17 +152,17 @@ break;
     break;
     case HOG_RIGHT:
     image(hogRightImg,hogX,hogY);
-    hogX+=(80.0/15.0);
+    hogX+=round(80.0/15.0);
     time++;
     break;
     case HOG_LEFT:
     image(hogLeftImg,hogX,hogY);
-    hogX-=(80.0/15.0);
+    hogX-=round(80.0/15.0);
     time++;
     break;
     case HOG_DOWN:
     image(hogDownImg,hogX,hogY);
-    hogY+=(80.0/15.0);
+    hogY+=round(80.0/15.0);
     time++;
     break;
   }
@@ -188,7 +188,7 @@ break;
      hogState=HOG_ORI;
    }
    //ate cabbage
-   if(hogY>=cabbageY+80*c){
+   if(hogY+80>cabbageY+80*c){
   if(hogX+80==cabbageX+80*a+80&&hogX+80>cabbageX+80*a){
   
      cabbageX=-(cabbageX+80*a);
@@ -215,7 +215,7 @@ break;
    //ate cabbage
    
   
-   if(hogY>=cabbageY+80*c){
+   if(hogY+80>cabbageY+80*c){
   if(hogX+80==cabbageX+80*a+80&&hogX+80>cabbageX+80*a){
   
      cabbageX=-(cabbageX+80*a);
